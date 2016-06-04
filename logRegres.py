@@ -14,6 +14,7 @@ def sigmoid(intX):
 def gradAscent(dataMatIn, classLabels):
     dataMatrix = np.mat(dataMatIn)
     labelMat = np.mat(classLabels).transpose()
+    print(labelMat)
     m, n = np.shape(dataMatrix)
     alpha = 0.001
     maxCycles = 500
@@ -21,32 +22,8 @@ def gradAscent(dataMatIn, classLabels):
     for k in range(maxCycles):
         h = sigmoid(dataMatrix*weights)
         error = (labelMat - h)
-        weight = weights + alpha*dataMatrix.transpose()*error
-    return weight
-    alpha = 0.001
-    maxCycles = 500
-    weights = one((n,1))
-    for k in range(maxCycles):
-        h = sigmoid(dataMatrix*weights)
-        error = (labelMat - h)
-        weight = weights + alpha*dataMatrix.transpose()*error
-    return weight
-    alpha = 0.001
-    maxCycles = 500
-    weights = one((n,1))
-    for k in range(maxCycles):
-        h = sigmoid(dataMatrix*weights)
-        error = (labelMat - h)
-        weight = weights + alpha*dataMatrix.transpose()*error
-    return weight
-    alpha = 0.001
-    maxCycles = 500
-    weights = one((n,1))
-    for k in range(maxCycles):
-        h = sigmoid(dataMatrix*weights)
-        error = (labelMat - h)
-        weight = weights + alpha*dataMatrix.transpose()*error
-    return weight
+        weights = weights + alpha*dataMatrix.transpose()*error
+    return weights
 def plotBestFit(weights):
     import matplotlib.pyplot as plt
     dataMat, labelMat = loadDataSet()
@@ -73,4 +50,24 @@ def plotBestFit(weights):
     plt.xlabel('X1')
     plt.ylabel('X2')
     plt.show()
-
+def stocGradAscent(dataMatrix, classLabels):
+    m,n = np.shape(dataMatrix)
+    alpha = 0.01
+    weights =np.ones(n)
+    for i in range(m):
+        h = sigmoid(sum(dataMatrix[i]*weights))
+        error = classLabels[i] - h
+        weights = weights + alpha*error*dataMatrix[i]
+    return weights
+def stocGradAscent1(dataMatrix,classLabels,numIter=150):
+    m,n = np.shape(dataMatrix)
+    weights = np.ones(n)
+    for j in range(numIter):
+        for i in range(m):
+            alpha = 4/(1.0+j+i)+0.01
+            randIndex = int(random.uniform(0,len(dataIndex)))
+            h = sigmoid(sum(dataMatrix[randIndex]*weights))
+            error = classLabels[randIndex] - h
+            weights = weights + alpha*error*dataMatrix[randIndex]
+            del(dataIndex[randIndex])
+    return weigths
